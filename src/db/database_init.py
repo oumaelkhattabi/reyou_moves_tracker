@@ -45,8 +45,7 @@ def initialize_database():
             source TEXT
         )
     ''')
-    
-    # Create table for lead validation and tracking
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS lead_tracking (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
