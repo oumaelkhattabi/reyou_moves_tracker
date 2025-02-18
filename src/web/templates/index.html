@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home - Company Moves Tracker{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Leads Overview</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Source</th>
+            <th>Content</th>
+            <th>Relevance Score</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for lead in leads %}
+        <tr>
+            <td>{{ lead[0] }}</td> <!-- Lead ID -->
+            <td>{{ lead[1] }}</td> <!-- Source (Twitter, LinkedIn, Real Estate) -->
+            <td>{{ lead[2][:100] }}...</td> <!-- Shortened Content -->
+            <td>{{ lead[3] }}</td> <!-- Relevance Score -->
+            <td>
+                <a href="{{ url_for('lead_details', lead_id=lead[0]) }}" class="btn btn-primary btn-sm">View Details</a>
+                <a href="{{ url_for('delete_lead', lead_id=lead[0]) }}" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

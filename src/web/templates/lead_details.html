@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{% block title %}Lead Details - Company Moves Tracker{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Lead Details</h2>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Lead ID: {{ lead[0] }}</h5>
+        <p><strong>Source:</strong> {{ lead[1] }}</p>
+        <p><strong>Content:</strong> {{ lead[2] }}</p>
+        <p><strong>Relevance Score:</strong> {{ lead[3] }}</p>
+        <p><strong>Investigation Status:</strong> {% if lead[4] %} Investigated {% else %} Not Investigated{% endif %}</p>
+        <p><strong>Notes:</strong> {{ lead[5] if lead[5] else "No notes added" }}</p>
+
+        <form action="{{ url_for('update_lead_status', lead_id=lead[0]) }}" method="POST">
+            <div class="mb-3">
+                <label for="notes" class="form-label">Update Notes</label>
+                <textarea id="notes" name="notes" class="form-control">{{ lead[5] }}</textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Mark as Investigated</button>
+        </form>
+
+        <a href="{{ url_for('delete_lead', lead_id=lead[0]) }}" class="btn btn-danger mt-3">Delete Lead</a>
+    </div>
+</div>
+
+<a href="{{ url_for('index') }}" class="btn btn-secondary mt-4">Back to Home</a>
+{% endblock %}
