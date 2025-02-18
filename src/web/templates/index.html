@@ -5,6 +5,39 @@
 {% block content %}
 <h2 class="mb-4">Viviers potentiels</h2>
 
+<form method="GET" action="{{ url_for('index') }}" class="mb-3 d-flex gap-3">
+    <!-- Filter by Investigation Status -->
+    <div>
+        <label for="filter" class="form-label">Filtrer par statut :</label>
+        <select name="filter" id="filter" class="form-select" onchange="this.form.submit()">
+            <option value="all" {% if filter == 'all' %}selected{% endif %}>Tous les leads</option>
+            <option value="investigated" {% if filter == 'investigated' %}selected{% endif %}>Investigated</option>
+            <option value="not_investigated" {% if filter == 'not_investigated' %}selected{% endif %}>Non Investigated</option>
+        </select>
+    </div>
+
+    <!-- Filter by Source -->
+    <div>
+        <label for="source" class="form-label">Filtrer par source :</label>
+        <select name="source" id="source" class="form-select" onchange="this.form.submit()">
+            <option value="all" {% if source == 'all' %}selected{% endif %}>Toutes les sources</option>
+            <option value="twitter" {% if source == 'twitter' %}selected{% endif %}>Twitter</option>
+            <option value="linkedin" {% if source == 'linkedin' %}selected{% endif %}>LinkedIn</option>
+            <option value="real_estate" {% if source == 'real_estate' %}selected{% endif %}>Immobilier</option>
+        </select>
+    </div>
+
+    <!-- Sort by Relevance Score -->
+    <div>
+        <label for="sort" class="form-label">Trier par score :</label>
+        <select name="sort" id="sort" class="form-select" onchange="this.form.submit()">
+            <option value="none" {% if sort == 'none' %}selected{% endif %}>Aucun tri</option>
+            <option value="asc" {% if sort == 'asc' %}selected{% endif %}>Score croissant</option>
+            <option value="desc" {% if sort == 'desc' %}selected{% endif %}>Score décroissant</option>
+        </select>
+    </div>
+</form>
+
 <table class="table table-striped">
     <thead>
         <tr>
@@ -12,6 +45,7 @@
             <th>Source</th>
             <th>Contenu</th>
             <th>Relevance Score</th>
+            <th>Investigated</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -22,6 +56,7 @@
             <td>{{ lead[1] }}</td> <!-- Source (Twitter, LinkedIn, Real Estate) -->
             <td>{{ lead[2][:100] }}...</td> <!-- Shortened Content -->
             <td>{{ lead[3] }}</td> <!-- Relevance Score -->
+            <td>{{ lead[4] }}</td>  <!-- Investigated or not -->
             <td>
                 <a href="{{ url_for('lead_details', lead_id=lead[0]) }}" class="btn btn-primary btn-sm">Détails</a>
                 <a href="{{ url_for('delete_lead', lead_id=lead[0]) }}" class="btn btn-danger btn-sm">Supprimer</a>

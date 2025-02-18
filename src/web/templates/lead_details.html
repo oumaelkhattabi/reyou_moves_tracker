@@ -9,11 +9,22 @@
     <div class="card-body">
         <h5 class="card-title">ID: {{ lead[0] }}</h5>
         <p><strong>Source:</strong> {{ lead[1] }}</p>
-        <p><strong>Contenu:</strong> {{ lead[2] }}</p>
+        {% if lead[1] == "twitter" and extra_info %}
+            <p><strong>Tweet ID:</strong> {{ extra_info[0] }}</p>
+            <p><strong>Username:</strong> @{{ extra_info[1] }}</p>
+            <p><strong>Contenu:</strong> {{ extra_info[2] }}</p>
+        {% elif lead[1] == "linkedin" and extra_info %}
+            <p><strong>Job Title:</strong> {{ extra_info[0] }}</p>
+            <p><strong>Company:</strong> {{ extra_info[1] }}</p>
+        {% elif lead[1] == "real_estate" and extra_info %}
+            <p><strong>Transaction Type:</strong> {{ extra_info[0] }}</p>
+            <p><strong>Location:</strong> {{ extra_info[1] }}</p>
+        {% endif %}
+        
         <p><strong>Score:</strong> {{ lead[3] }}</p>
         <p><strong>Status:</strong> {% if lead[4] %} Investigated {% else %} Not Investigated{% endif %}</p>
         <p><strong>Notes:</strong> {{ lead[5] if lead[5] else "Aucune note" }}</p>
-
+        
         <form action="{{ url_for('lead_details', lead_id=lead[0]) }}" method="POST">
             
             <div class="form-check mb-3">
