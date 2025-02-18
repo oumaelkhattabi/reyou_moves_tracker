@@ -19,7 +19,7 @@ def index():
     source_option = request.args.get("source", "all")  # Default: "all"
     sort_option = request.args.get("sort", "none")  # Default: "none"
 
-    db_conn = sqlite3.connect("../../leads.db")
+    db_conn = sqlite3.connect("leads.db")
     cursor = db_conn.cursor()
 
     # Build dynamic SQL query
@@ -70,7 +70,7 @@ def lead_details(lead_id):
     extra_info = None
     source = lead[1]  # 'twitter', 'linkedin', or 'real_estate'
 
-    db_conn = sqlite3.connect("../../leads.db")
+    db_conn = sqlite3.connect("leads.db")
     cursor = db_conn.cursor()
 
     if source == "twitter":
