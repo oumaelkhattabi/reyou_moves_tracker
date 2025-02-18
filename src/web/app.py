@@ -4,6 +4,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../.
 import sqlite3
 from flask import Flask, render_template, request, redirect, url_for, flash
 from src.db.database import get_all_rows, get_lead_by_id, update_lead_status, delete_row, count_rows
+from src.api.twitter import fetch_tweets
 
 # Initialize Flask App
 app = Flask(__name__)
@@ -11,7 +12,7 @@ app.secret_key = "supersecretkey"  # For flashing messages
 
 # Homepage: Display Leads
 table_names = ["linkedin_jobs", "twitter_posts", "linkedin_posts", "real_estate_transactions"]
-@app.route('/')
+
 @app.route('/')
 def index():
     filter_option = request.args.get("filter", "all")  # Default: "all"
@@ -45,6 +46,16 @@ def index():
     db_conn.close()
 
     return render_template("index.html", leads=leads, filter=filter_option, source=source_option, sort=sort_option)
+
+@app.route('/run_twitter_scraper', methods=['POST'])
+def run_twitter_scraper():
+    try:
+        fetch_tweets()  # Exécuter directement la fonction du scraper
+        flash("Collecte Twitter terminée avec succès.", "success")
+    except Exception as e:
+        flash(f"Erreur lors de la collecte : {str(e)}", "danger")
+
+    return redirect(url_for('index'))
 
 # Lead Details Page
 @app.route('/lead/<int:lead_id>', methods=['GET', 'POST'])

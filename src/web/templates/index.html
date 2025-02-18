@@ -38,6 +38,10 @@
     </div>
 </form>
 
+<form action="{{ url_for('run_twitter_scraper') }}" method="POST">
+    <button type="submit" class="btn btn-primary mb-3">Lancer la collecte Twitter</button>
+</form>
+
 <table class="table table-striped">
     <thead>
         <tr>
