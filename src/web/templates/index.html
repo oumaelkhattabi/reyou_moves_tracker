@@ -3,14 +3,14 @@
 {% block title %}Home - Company Moves Tracker{% endblock %}
 
 {% block content %}
-<h2 class="mb-4">Leads Overview</h2>
+<h2 class="mb-4">Viviers potentiels</h2>
 
 <table class="table table-striped">
     <thead>
         <tr>
             <th>ID</th>
             <th>Source</th>
-            <th>Content</th>
+            <th>Contenu</th>
             <th>Relevance Score</th>
             <th>Actions</th>
         </tr>
@@ -23,8 +23,8 @@
             <td>{{ lead[2][:100] }}...</td> <!-- Shortened Content -->
             <td>{{ lead[3] }}</td> <!-- Relevance Score -->
             <td>
-                <a href="{{ url_for('lead_details', lead_id=lead[0]) }}" class="btn btn-primary btn-sm">View Details</a>
-                <a href="{{ url_for('delete_lead', lead_id=lead[0]) }}" class="btn btn-danger btn-sm">Delete</a>
+                <a href="{{ url_for('lead_details', lead_id=lead[0]) }}" class="btn btn-primary btn-sm">Détails</a>
+                <a href="{{ url_for('delete_lead', lead_id=lead[0]) }}" class="btn btn-danger btn-sm">Supprimer</a>
             </td>
         </tr>
         {% endfor %}

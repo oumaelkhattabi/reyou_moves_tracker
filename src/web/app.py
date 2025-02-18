@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+
 from flask import Flask, render_template, request, redirect, url_for, flash
 from src.db.database import get_all_rows, get_lead_by_id, update_lead_status, delete_row, count_rows
 
@@ -35,7 +39,6 @@ def delete_lead(lead_id):
     delete_row("lead_tracking", lead_id)
     flash("Lead deleted successfully!", "success")
     return redirect(url_for('index'))
-
 
 if __name__ == '__main__':
     app.run(debug=True)
