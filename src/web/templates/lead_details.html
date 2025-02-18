@@ -15,13 +15,21 @@
         <p><strong>Notes:</strong> {{ lead[5] if lead[5] else "Aucune note" }}</p>
 
         <form action="{{ url_for('lead_details', lead_id=lead[0]) }}" method="POST">
+            
+            <div class="form-check mb-3">
+                <input type="checkbox" id="investigated" name="investigated" class="form-check-input"
+                       {% if lead[4] %}checked{% endif %}>
+                <label class="form-check-label" for="investigated">Marquer comme investigué</label>
+            </div>
             <div class="mb-3">
                 <label for="notes" class="form-label">Mettre-à-jour les notes</label>
                 <textarea id="notes" name="notes" class="form-control">{{ lead[5] }}</textarea>
             </div>
-            <button type="submit" class="btn btn-success">Mark as Investigated</button>
+
+            <button type="submit" class="btn btn-success">Mettre à jour</button>
         </form>
 
+        <!-- Delete Lead Button -->
         <a href="{{ url_for('delete_lead', lead_id=lead[0]) }}" class="btn btn-danger mt-3">Supprimer</a>
     </div>
 </div>
