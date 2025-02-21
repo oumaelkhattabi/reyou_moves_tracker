@@ -4,6 +4,7 @@ import sqlite3
 import json
 import os
 import requests
+import datetime
 
 # Load API credentials
 config_path = os.path.join(os.path.dirname(__file__), "../../config.json")
@@ -16,20 +17,13 @@ BEARER_TOKEN = config["twitter_bearer_token"]
 # Connect to Twitter API
 client = tweepy.Client(bearer_token=BEARER_TOKEN)
 
-QUERY = "changement de locaux lang:fr -is:retweet"
-MAX_TWEETS = 1  # Reduce request load
-
-url = "https://api.twitter.com/2/tweets/search/recent"
-headers = {"Authorization": f"Bearer {BEARER_TOKEN}"}
-
-response = requests.get("https://api.twitter.com/2/tweets/search/recent", headers=headers)
-
-print("Status Code:", response.status_code)
-print("Response:", response.json())
+QUERY = "Fermeture de bureau lang:fr -is:retweet"
+MAX_TWEETS = 10
 
 def fetch_tweets():
     """Retrieve tweets and store them in the database, handling rate limits."""
     try:
+        print(datetime.datetime.now())
         tweets = client.search_recent_tweets(
             query=QUERY, max_results=MAX_TWEETS, tweet_fields=["id", "text", "author_id", "created_at"]
         )
@@ -37,8 +31,8 @@ def fetch_tweets():
         if not tweets.data:
             print("Aucun tweet trouvé.")
             return
-
-        db_conn = sqlite3.connect("../../leads.db")
+        print(tweets)
+        db_conn = sqlite3.connect("leads.db")
         cursor = db_conn.cursor()
 
         for tweet in tweets.data:

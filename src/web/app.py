@@ -5,11 +5,18 @@ import sqlite3
 from flask import Flask, render_template, request, redirect, url_for, flash
 from src.db.database import get_all_rows, get_lead_by_id, update_lead_status, delete_row, count_rows
 from src.api.twitter import fetch_tweets
+import re
 
 # Initialize Flask App
 app = Flask(__name__)
 app.secret_key = "supersecretkey"  # For flashing messages
 
+# Custom filter to clean the username
+def clean_numbers(value):
+    return re.sub(r"\D", "", value)
+
+# Register the filter in Jinja
+app.jinja_env.filters["clean_numbers"] = clean_numbers
 # Homepage: Display Leads
 table_names = ["linkedin_jobs", "twitter_posts", "linkedin_posts", "real_estate_transactions"]
 
@@ -18,6 +25,7 @@ def index():
     filter_option = request.args.get("filter", "all")  # Default: "all"
     source_option = request.args.get("source", "all")  # Default: "all"
     sort_option = request.args.get("sort", "none")  # Default: "none"
+    date_sort_option = request.args.get("date_sort", "newest")  # Tri par date
 
     db_conn = sqlite3.connect("leads.db")
     cursor = db_conn.cursor()
@@ -40,6 +48,8 @@ def index():
         query += " ORDER BY relevance_score ASC"
     elif sort_option == "desc":
         query += " ORDER BY relevance_score DESC"
+
+    # Ajouter tri par date: to do, the date field is not in the lead tracking table
 
     cursor.execute(query, params)
     leads = cursor.fetchall()
