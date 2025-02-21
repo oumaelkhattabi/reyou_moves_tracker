@@ -36,10 +36,19 @@
             <option value="desc" {% if sort == 'desc' %}selected{% endif %}>Score décroissant</option>
         </select>
     </div>
+
+    <div>
+        <label for="date_sort" class="form-label">Trier par date :</label>
+        <select name="date_sort" id="date_sort" class="form-select" onchange="this.form.submit()">
+            <option value="none" {% if date_sort == 'none' %}selected{% endif %}>Aucun tri</option>
+            <option value="oldest" {% if date_sort == 'oldest' %}selected{% endif %}>Date croissante</option>
+            <option value="newest" {% if date_sort == 'newest' %}selected{% endif %}>Date décroissante</option>
+        </select>
+    </div>
 </form>
 
 <form action="{{ url_for('run_twitter_scraper') }}" method="POST">
-    <button type="submit" class="btn btn-primary mb-3">Lancer la collecte Twitter</button>
+    <button type="submit" class="btn btn-primary mb-3">Lancer la collecte de leads</button>
 </form>
 
 <table class="table table-striped">
@@ -48,7 +57,6 @@
             <th>ID</th>
             <th>Source</th>
             <th>Contenu</th>
-            <th>Relevance Score</th>
             <th>Investigated</th>
             <th>Actions</th>
         </tr>
@@ -59,11 +67,12 @@
             <td>{{ lead[0] }}</td> <!-- Lead ID -->
             <td>{{ lead[1] }}</td> <!-- Source (Twitter, LinkedIn, Real Estate) -->
             <td>{{ lead[2][:100] }}...</td> <!-- Shortened Content -->
-            <td>{{ lead[3] }}</td> <!-- Relevance Score -->
             <td>{{ lead[4] }}</td>  <!-- Investigated or not -->
             <td>
                 <a href="{{ url_for('lead_details', lead_id=lead[0]) }}" class="btn btn-primary btn-sm">Détails</a>
-                <a href="{{ url_for('delete_lead', lead_id=lead[0]) }}" class="btn btn-danger btn-sm">Supprimer</a>
+                <form action="{{ url_for('delete_lead', lead_id=lead[0]) }}" method="POST" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                </form>
             </td>
         </tr>
         {% endfor %}
